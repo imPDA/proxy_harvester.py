@@ -9,5 +9,5 @@ setup(
     url='https://github.com/imPDA/proxy_harvester',
     author='imPDA',
 
-    py_modules=['proxy_harvesters'],
+    packages=['proxy_harvester']
 )
