@@ -1,1 +1,1 @@
-from proxy_harvesters2 import FreeProxyListHarvester
+from proxy_harvesters import FreeProxyListHarvester
