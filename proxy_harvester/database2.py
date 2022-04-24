@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Optional
 import pickle
 from pprint import pprint
 
@@ -7,9 +7,8 @@ from datatypes import ProxyAddress, ProxyType
 
 class ProxyDatabase:
     """Database."""
-    path = 'database.pickle'
-
-    def __init__(self):
+    def __init__(self, path: Optional[str] = None):
+        self._path = path if path else 'database.pickle'
         self._database: Dict | None = None
         self._database = self.open_from_file()
 
@@ -19,7 +18,7 @@ class ProxyDatabase:
 
     def open_from_file(self) -> Dict:
         try:
-            with open(self.path, 'rb') as f:
+            with open(self._path, 'rb') as f:
                 return pickle.load(f)
         except FileNotFoundError:
             print('File not found, create empty file first!')
@@ -27,14 +26,15 @@ class ProxyDatabase:
             return {}
 
     def save_to_file(self):
-        with open(self.path, 'wb') as f:
+        with open(self._path, 'wb') as f:
             pickle.dump(self._database, f)
 
     def add_new_proxy(self, proxy: ProxyAddress):
         if proxy.ip not in self._database:
             self._database.update({proxy.ip: proxy})
         else:
-            print(f"{proxy} already in database.")
+            pass
+            # print(f"{proxy} already in database.")
 
     def pop_proxy(self, proxy: str | ProxyAddress):
         if isinstance(proxy, ProxyAddress):

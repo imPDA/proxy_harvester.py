@@ -225,4 +225,4 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-/proxy_harvester/database.pickle
+/database.pickle
