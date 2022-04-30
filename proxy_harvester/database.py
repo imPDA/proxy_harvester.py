@@ -1,13 +1,14 @@
 from typing import Dict, Optional
 import pickle
 from pprint import pprint
+from pathlib import Path
 
 from .datatypes import ProxyAddress, ProxyType
 
 
 class ProxyDatabase:
     """Database."""
-    def __init__(self, path: Optional[str] = None):
+    def __init__(self, path: Optional[str | Path] = None):
         self._path = path if path else 'database.pickle'
         self._database: Dict | None = None
         self._database = self.open_from_file()
