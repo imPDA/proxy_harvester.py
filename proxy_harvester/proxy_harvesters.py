@@ -44,7 +44,7 @@ async def main():
     print(datetime.now())
     print(len(db.data))
 
-    await asyncio.sleep(60*10)
+    await asyncio.sleep(60*30)
     await main()
 
 
