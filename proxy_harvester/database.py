@@ -14,7 +14,7 @@ class ProxyDatabase:
         self._database: Dict[str, ProxyAddress] = self.open_from_file()
 
     @property
-    def data(self) -> Dict[str, ProxyAddress]::
+    def data(self) -> Dict[str, ProxyAddress]:
         return self._database
 
     def open_from_file(self) -> Dict[str, ProxyAddress]:
