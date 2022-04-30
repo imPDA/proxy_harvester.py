@@ -14,7 +14,7 @@ class ProxyDatabase:
         self._database: Dict[str, ProxyAddress] = self.open_from_file()
 
     @property
-    def data(self):
+    def data(self) -> Dict[str, ProxyAddress]::
         return self._database
 
     def open_from_file(self) -> Dict[str, ProxyAddress]:
@@ -25,6 +25,8 @@ class ProxyDatabase:
         except FileNotFoundError:
             print('File not found, create empty file first!')
             self.save_to_file()
+            return {}
+        except EOFError:
             return {}
 
     # def open_from_file_old(self) -> Dict[str, ProxyAddress]:
