@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='ProxyHarvester',
-    version='0.3.dev',
+    version='0.3.dev1',
     url='https://github.com/imPDA/proxy_harvester.py',
     author='imPDA',
     # packages=find_packages(),
