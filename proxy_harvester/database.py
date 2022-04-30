@@ -10,25 +10,36 @@ class ProxyDatabase:
     """Database."""
     def __init__(self, path: Optional[str | Path] = None):
         self._path = path if path else 'database.pickle'
-        self._database: Dict | None = None
-        self._database = self.open_from_file()
+        self._database: Dict[str, ProxyAddress] | None = None
+        self._database: Dict[str, ProxyAddress] = self.open_from_file()
 
     @property
     def data(self):
         return self._database
 
-    def open_from_file(self) -> Dict:
+    def open_from_file(self) -> Dict[str, ProxyAddress]:
         try:
             with open(self._path, 'rb') as f:
-                return pickle.load(f)
+                raw_database = pickle.load(f)
+                return {k: ProxyAddress.from_pickle(v) for k, v in raw_database.items()}
         except FileNotFoundError:
             print('File not found, create empty file first!')
             self.save_to_file()
             return {}
 
+    # def open_from_file_old(self) -> Dict[str, ProxyAddress]:
+    #     try:
+    #         with open(self._path, 'rb') as f:
+    #             return pickle.load(f)
+    #     except FileNotFoundError:
+    #         print('File not found, create empty file first!')
+    #         self.save_to_file()
+    #         return {}
+
     def save_to_file(self):
         with open(self._path, 'wb') as f:
-            pickle.dump(self._database, f)
+            database_to_dump = {k: v.to_json() for k, v in self._database.items()}
+            pickle.dump(database_to_dump, f)
 
     def add_new_proxy(self, proxy: ProxyAddress):
         if proxy.ip not in self._database:
