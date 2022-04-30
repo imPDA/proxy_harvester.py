@@ -2,7 +2,7 @@ from typing import Dict, Optional
 import pickle
 from pprint import pprint
 
-from datatypes import ProxyAddress, ProxyType
+from .datatypes import ProxyAddress, ProxyType
 
 
 class ProxyDatabase:

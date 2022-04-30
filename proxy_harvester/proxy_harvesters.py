@@ -1,14 +1,14 @@
 from abc import ABC
 import asyncio
-from datatypes import ProxyAddress
-from typing import List
 
+from .datatypes import ProxyAddress
+from .database import ProxyDatabase
+from .webbrowser import WebBrowser, ChromeWithWire
+
+from typing import List
 from bs4 import BeautifulSoup
-from proxy_harvester.webbrowser import WebBrowser, ChromeWithWire
-from database import ProxyDatabase
 from datetime import datetime
 
-__version__ = 'dev'
 
 class Scrapper(ABC):
     async def get_new_proxy(self) -> List[ProxyAddress]:

@@ -1,11 +1,11 @@
 from setuptools import setup, find_packages
 
-from proxy_harvester.proxy_harvesters import __version__
 
 setup(
-    name='ProxyHarvesters',
-    version=__version__,
+    name='ProxyHarvester',
+    version='0.3.dev',
     url='https://github.com/imPDA/proxy_harvester',
     author='imPDA',
-    packages=find_packages(),
+    # packages=find_packages(),
+    packages=['proxy_harvester'],
 )
