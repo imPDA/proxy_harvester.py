@@ -1,9 +1,9 @@
 from abc import ABC
 import asyncio
 
-from .datatypes import ProxyAddress
-from .database import ProxyDatabase
-from .webbrowser import WebBrowser, ChromeWithWire
+from proxy_harvester.datatypes import ProxyAddress
+from proxy_harvester.database import ProxyDatabase
+from proxy_harvester.webbrowser import WebBrowser, ChromeWithWire
 
 from typing import List
 from bs4 import BeautifulSoup

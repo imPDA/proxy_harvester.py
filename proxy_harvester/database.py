@@ -3,7 +3,7 @@ import pickle
 from pprint import pprint
 from pathlib import Path
 
-from .datatypes import ProxyAddress, ProxyType
+from proxy_harvester.datatypes import ProxyAddress, ProxyType
 
 
 class ProxyDatabase:

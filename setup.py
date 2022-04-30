@@ -1,5 +1,7 @@
 from setuptools import setup, find_packages
 
+with open('requirements.txt') as f:
+    required = f.read().splitlines()
 
 setup(
     name='ProxyHarvester',
@@ -8,4 +10,7 @@ setup(
     author='imPDA',
     # packages=find_packages(),
     packages=['proxy_harvester'],
+    install_requires=required,
 )
+
+
