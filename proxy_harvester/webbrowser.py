@@ -2,8 +2,10 @@ from abc import ABC, abstractmethod
 
 # from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+import seleniumwire.undetected_chromedriver as uc
 from seleniumwire import webdriver, utils
 from webdriver_manager.chrome import ChromeDriverManager
+from typing import Optional
 
 from pprint import pprint
 import json
@@ -22,7 +24,7 @@ class ChromeWithWire(DriverFactory):
     """SeleniumChrome with Wire"""
 
     @staticmethod
-    def get_driver() -> webdriver:
+    def get_driver(headless: Optional[bool] = True) -> webdriver:
         svc = Service(ChromeDriverManager().install())
 
         options = {
@@ -34,12 +36,43 @@ class ChromeWithWire(DriverFactory):
         }
 
         chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument('--headless')
         chrome_options.add_argument('--no-sandbox')
+
+        if headless:
+            chrome_options.add_argument('--headless')
+
         # chrome_options.add_argument('--ignore-certificate-errors-spki-list')
         # chrome_options.add_argument('--ignore-ssl-errors')
 
         driver = webdriver.Chrome(service=svc, seleniumwire_options=options, options=chrome_options)
+        return driver
+
+
+class UCWithWire(DriverFactory):
+    """SeleniumChrome with Wire"""
+
+    @staticmethod
+    def get_driver(headless: Optional[bool] = True) -> webdriver:
+        svc = Service(ChromeDriverManager().install())
+
+        options = {
+            # 'proxy': {
+            #     'http': 'http://myusername:password@myproxyserver.com:123456',
+            #     'https': 'http://myusername:password@myproxyserver.com:123456',
+            #     'no_proxy': 'localhost,127.0.0.1'  # excludes
+            # }
+        }
+
+        chrome_options = uc.ChromeOptions()
+        chrome_options.add_argument('--no-sandbox')
+
+        if headless:
+            chrome_options.add_argument('--headless')
+
+        # chrome_options.add_argument('--ignore-certificate-errors-spki-list')
+        # chrome_options.add_argument('--ignore-ssl-errors')
+
+        driver = uc.Chrome(options=chrome_options, seleniumwire_options=options)
         return driver
 
 
@@ -53,7 +86,7 @@ class WebBrowser:
         self._driver.get(url)
 
     @property
-    def driver(self):
+    def driver(self) -> webdriver:
         return self._driver
 
     @property
