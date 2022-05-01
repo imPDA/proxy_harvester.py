@@ -1,11 +1,12 @@
 from setuptools import setup, find_packages
 
-with open('requirements.txt') as f:
+with open('requirements.txt', 'r', encoding='utf-16') as f:
     required = f.read().splitlines()
+    print(required)
 
 setup(
     name='ProxyHarvester',
-    version='0.4.dev0',
+    version='0.4.dev1',
     url='https://github.com/imPDA/proxy_harvester.py',
     author='imPDA',
     # packages=find_packages(),
