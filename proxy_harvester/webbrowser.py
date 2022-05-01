@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 # from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 import seleniumwire.undetected_chromedriver as uc
+import undetected_chromedriver.v2 as uc2
 from seleniumwire import webdriver, utils
 from webdriver_manager.chrome import ChromeDriverManager
 from typing import Optional
@@ -38,7 +39,7 @@ class ChromeWithWire(DriverFactory):
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--no-sandbox')
 
-        if kwargs.get['headless'] is True:
+        if kwargs.get('headless', True):
             chrome_options.add_argument('--headless')
 
         # chrome_options.add_argument('--ignore-certificate-errors-spki-list')
@@ -53,7 +54,6 @@ class UCWithWire(DriverFactory):
 
     @staticmethod
     def get_driver(*args, **kwargs) -> webdriver:
-        # svc = Service(ChromeDriverManager().install())
         options = {
             # 'proxy': {
             #     'http': 'http://myusername:password@myproxyserver.com:123456',
@@ -63,15 +63,19 @@ class UCWithWire(DriverFactory):
         }
 
         chrome_options = uc.ChromeOptions()
-        chrome_options.add_argument('--no-sandbox')
+        # chrome_options.add_argument('--no-sandbox')
 
-        if kwargs.get('headless', True) is True:
+        if kwargs.get('headless', True):
             chrome_options.add_argument('--headless')
 
         # chrome_options.add_argument('--ignore-certificate-errors-spki-list')
         # chrome_options.add_argument('--ignore-ssl-errors')
 
-        driver = uc.Chrome(options=chrome_options, seleniumwire_options=options)
+        driver = uc.Chrome(
+            options=chrome_options,
+            seleniumwire_options=options,
+            version_main=100,  # TODO fix version
+        )
         return driver
 
 
@@ -79,7 +83,7 @@ class WebBrowser:
     """Web browser."""
 
     def __init__(self, driver: DriverFactory, *args, **kwargs):
-        self._driver = driver.get_driver(args, kwargs)
+        self._driver = driver.get_driver(*args, **kwargs)
 
     def open(self, url):
         self._driver.get(url)
@@ -94,8 +98,8 @@ class WebBrowser:
 
 
 def main():
-    # my_browser = WebBrowser(driver=ChromeWithWire())
-    # my_browser.open(url='https://eu.tamrieltradecentre.com/pc/Trade/SearchResult?ItemID=211')
+    my_browser = WebBrowser(driver=UCWithWire(), headless=False)
+    my_browser.open(url='https://eu.tamrieltradecentre.com/pc/Trade/SearchResult?ItemID=211')
     # for request in my_browser.driver.requests:
     #     response = request.response
     #     if response and "Search?ItemID=" in request.url:
@@ -108,3 +112,4 @@ def main():
 if __name__ == '__main__':
     main()
 
+# TODO Use UC wire functionality
