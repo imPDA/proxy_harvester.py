@@ -16,7 +16,7 @@ class DriverFactory(ABC):
 
     @staticmethod
     @abstractmethod
-    def get_driver() -> webdriver:
+    def get_driver(*args, **kwargs) -> webdriver:
         raise NotImplementedError
 
 
@@ -24,7 +24,7 @@ class ChromeWithWire(DriverFactory):
     """SeleniumChrome with Wire"""
 
     @staticmethod
-    def get_driver(headless: Optional[bool] = True) -> webdriver:
+    def get_driver(*args, **kwargs) -> webdriver:
         svc = Service(ChromeDriverManager().install())
 
         options = {
@@ -38,7 +38,7 @@ class ChromeWithWire(DriverFactory):
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--no-sandbox')
 
-        if headless:
+        if kwargs.get['headless'] is True:
             chrome_options.add_argument('--headless')
 
         # chrome_options.add_argument('--ignore-certificate-errors-spki-list')
@@ -52,9 +52,8 @@ class UCWithWire(DriverFactory):
     """SeleniumChrome with Wire"""
 
     @staticmethod
-    def get_driver(headless: Optional[bool] = True) -> webdriver:
-        svc = Service(ChromeDriverManager().install())
-
+    def get_driver(*args, **kwargs) -> webdriver:
+        # svc = Service(ChromeDriverManager().install())
         options = {
             # 'proxy': {
             #     'http': 'http://myusername:password@myproxyserver.com:123456',
@@ -66,7 +65,7 @@ class UCWithWire(DriverFactory):
         chrome_options = uc.ChromeOptions()
         chrome_options.add_argument('--no-sandbox')
 
-        if headless:
+        if kwargs.get['headless'] is True:
             chrome_options.add_argument('--headless')
 
         # chrome_options.add_argument('--ignore-certificate-errors-spki-list')
@@ -79,8 +78,8 @@ class UCWithWire(DriverFactory):
 class WebBrowser:
     """Web browser."""
 
-    def __init__(self, driver: DriverFactory):
-        self._driver = driver.get_driver()
+    def __init__(self, driver: DriverFactory, *args, **kwargs):
+        self._driver = driver.get_driver(args, kwargs)
 
     def open(self, url):
         self._driver.get(url)
