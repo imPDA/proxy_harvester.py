@@ -65,7 +65,7 @@ class UCWithWire(DriverFactory):
         chrome_options = uc.ChromeOptions()
         chrome_options.add_argument('--no-sandbox')
 
-        if kwargs.get['headless'] is True:
+        if kwargs.get('headless', True) is True:
             chrome_options.add_argument('--headless')
 
         # chrome_options.add_argument('--ignore-certificate-errors-spki-list')
