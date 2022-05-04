@@ -226,3 +226,4 @@ dmypy.json
 cython_debug/
 
 /proxy_harvester/database.pickle
+!/proxy_harvester/previous_shit.py

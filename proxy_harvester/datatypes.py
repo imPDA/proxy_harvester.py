@@ -3,18 +3,18 @@ from typing import Dict, Optional, List
 from enum import Enum, auto
 
 
-class ProxyType(Enum):
-    HTTP = auto()
-    HTTPS = auto()
-    Socks4 = auto()
-    Socks5 = auto()
+# class ProxyType(Enum):
+#     HTTP = auto()
+#     HTTPS = auto()
+#     socks4 = auto()
+#     socks5 = auto()
 
 
 @dataclass
 class ProxyAddress:
     ip: str
-    ports: List[int] = field(default_factory=list)
-    types: List[ProxyType] = field(default_factory=list)
+    ports: Dict[str, int] = field(default_factory=dict)
+    # types: List[str] = field(default_factory=list)
     data: Dict = field(default_factory=dict)
     statistics: Dict = field(default_factory=dict)
 
@@ -22,13 +22,12 @@ class ProxyAddress:
         return self.__dict__
 
     @classmethod
-    def from_pickle(cls, pickled):
+    def from_json(cls, some_json):
         return cls(
-            ip=pickled['ip'],
-            ports=pickled['ports'],
-            types=pickled['types'],
-            data=pickled['data'],
-            statistics=pickled['statistics'],
+            ip=some_json['ip'],
+            ports=some_json['ports'],
+            data=some_json['data'],
+            statistics=some_json['statistics'],
         )
 
 

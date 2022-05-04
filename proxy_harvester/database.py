@@ -3,7 +3,7 @@ import pickle
 from pprint import pprint
 from pathlib import Path
 
-from proxy_harvester.datatypes import ProxyAddress, ProxyType
+from proxy_harvester.datatypes import ProxyAddress
 
 
 class ProxyDatabase:
@@ -21,7 +21,7 @@ class ProxyDatabase:
         try:
             with open(self._path, 'rb') as f:
                 raw_database = pickle.load(f)
-                return {k: ProxyAddress.from_pickle(v) for k, v in raw_database.items()}
+                return {k: ProxyAddress.from_json(v) for k, v in raw_database.items()}
         except FileNotFoundError:
             print('File not found, create empty file first!')
             self.save_to_file()
@@ -45,7 +45,7 @@ class ProxyDatabase:
 
     def add_new_proxy(self, proxy: ProxyAddress):
         if proxy.ip not in self._database:
-            self._database.update({proxy.ip: proxy})
+            self._database.update({proxy.ip: proxy, })
         else:
             pass
             # print(f"{proxy} already in database.")

@@ -6,7 +6,7 @@ import seleniumwire.undetected_chromedriver as uc
 import undetected_chromedriver.v2 as uc2
 from seleniumwire import webdriver, utils
 from webdriver_manager.chrome import ChromeDriverManager
-from typing import Optional
+from typing import Optional, Union
 
 from pprint import pprint
 import json
@@ -17,7 +17,7 @@ class DriverFactory(ABC):
 
     @staticmethod
     @abstractmethod
-    def get_driver(*args, **kwargs) -> webdriver:
+    def get_driver(*args, **kwargs) -> Union[webdriver.Chrome, webdriver.Firefox, webdriver.Edge]:
         raise NotImplementedError
 
 
@@ -25,7 +25,7 @@ class ChromeWithWire(DriverFactory):
     """SeleniumChrome with Wire"""
 
     @staticmethod
-    def get_driver(*args, **kwargs) -> webdriver:
+    def get_driver(*args, **kwargs) -> Union[webdriver.Chrome, webdriver.Firefox, webdriver.Edge]:
         svc = Service(ChromeDriverManager().install())
 
         options = {
@@ -37,10 +37,10 @@ class ChromeWithWire(DriverFactory):
         }
 
         chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument('--no-sandbox')
-
         if kwargs.get('headless', True):
             chrome_options.add_argument('--headless')
+        if kwargs.get('no_sandbox', False):
+            chrome_options.add_argument('--no-sandbox')
 
         # chrome_options.add_argument('--ignore-certificate-errors-spki-list')
         # chrome_options.add_argument('--ignore-ssl-errors')
@@ -63,10 +63,10 @@ class UCWithWire(DriverFactory):
         }
 
         chrome_options = uc.ChromeOptions()
-        # chrome_options.add_argument('--no-sandbox')
-
         if kwargs.get('headless', True):
             chrome_options.add_argument('--headless')
+        if kwargs.get('no_sandbox', False):
+            chrome_options.add_argument('--no-sandbox')
 
         # chrome_options.add_argument('--ignore-certificate-errors-spki-list')
         # chrome_options.add_argument('--ignore-ssl-errors')
@@ -92,10 +92,6 @@ class WebBrowser:
     def driver(self) -> webdriver:
         return self._driver
 
-    @property
-    def page_content(self):
-        return self._driver.page_source
-
 
 def main():
     my_browser = WebBrowser(driver=UCWithWire(), headless=False)
@@ -112,4 +108,3 @@ def main():
 if __name__ == '__main__':
     main()
 
-# TODO Use UC wire functionality
