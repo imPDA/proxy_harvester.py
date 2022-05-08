@@ -13,10 +13,9 @@ from enum import Enum, auto
 @dataclass
 class ProxyAddress:
     ip: str
-    ports: Dict[str, int] = field(default_factory=dict)
-    # types: List[str] = field(default_factory=list)
-    data: Dict = field(default_factory=dict)
-    statistics: Dict = field(default_factory=dict)
+    ports: dict[str, int] = field(default_factory=dict)
+    data: dict = field(default_factory=dict)
+    statistics: dict = field(default_factory=dict)
 
     def to_json(self):
         return self.__dict__
@@ -29,6 +28,10 @@ class ProxyAddress:
             data=some_json['data'],
             statistics=some_json['statistics'],
         )
+
+    def __eq__(self, other):
+        if isinstance(other, ProxyAddress):
+            return self.ip == other.ip and self.ports == other.ports
 
 
 if __name__ == '__main__':

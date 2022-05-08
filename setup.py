@@ -6,7 +6,7 @@ with open('requirements.txt', 'r', encoding='utf-16') as f:
 
 setup(
     name='ProxyHarvester',
-    version='0.5.dev1',
+    version='0.6.dev0',
     url='https://github.com/imPDA/proxy_harvester.py',
     author='imPDA',
     # packages=find_packages(),

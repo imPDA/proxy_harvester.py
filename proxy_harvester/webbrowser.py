@@ -22,10 +22,9 @@ class DriverFactory(ABC):
 
 
 class ChromeWithWire(DriverFactory):
-    """SeleniumChrome with Wire"""
-
+    """SeleniumWire-Chrome """
     @staticmethod
-    def get_driver(*args, **kwargs) -> Union[webdriver.Chrome, webdriver.Firefox, webdriver.Edge]:
+    def get_driver(*args, **kwargs) -> webdriver.Chrome:
         svc = Service(ChromeDriverManager().install())
 
         options = {
@@ -50,10 +49,9 @@ class ChromeWithWire(DriverFactory):
 
 
 class UCWithWire(DriverFactory):
-    """SeleniumChrome with Wire"""
-
+    """SeleniumWire-UndetectedChrome"""
     @staticmethod
-    def get_driver(*args, **kwargs) -> webdriver:
+    def get_driver(*args, **kwargs) -> webdriver.Chrome:
         options = {
             # 'proxy': {
             #     'http': 'http://myusername:password@myproxyserver.com:123456',
@@ -80,8 +78,7 @@ class UCWithWire(DriverFactory):
 
 
 class WebBrowser:
-    """Web browser."""
-
+    """Web browser"""
     def __init__(self, driver: DriverFactory, *args, **kwargs):
         self._driver = driver.get_driver(*args, **kwargs)
 
@@ -89,7 +86,7 @@ class WebBrowser:
         self._driver.get(url)
 
     @property
-    def driver(self) -> webdriver:
+    def driver(self):
         return self._driver
 
 

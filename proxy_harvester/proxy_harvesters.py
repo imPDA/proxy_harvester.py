@@ -64,6 +64,43 @@ class WebShareHarvester(Harvester):
         ) for proxy in response.json()['results']]
 
 
+class ProxyScrapeHarvester(Harvester):
+    """https://proxyscrape.com/free-proxy-list"""
+
+    URLS = [
+        "https://api.proxyscrape.com/v2/?request=getproxies&protocol=http&timeout=10000&country=all&ssl=all&anonymity=all&simplified=true",
+        "https://api.proxyscrape.com/v2/?request=getproxies&protocol=socks4&timeout=10000&country=all&simplified=true",
+        "https://api.proxyscrape.com/v2/?request=getproxies&protocol=socks5&timeout=10000&country=all"
+    ]
+
+    @staticmethod
+    async def _get_text(url) -> str:
+        response = await asyncio.get_event_loop().run_in_executor(
+            None,
+            functools.partial(
+                requests.get,
+                url,
+            )
+        )
+        return response.text
+
+    @classmethod
+    async def get_new_proxy(cls) -> List[ProxyAddress]:
+        list_of_proxy = []
+
+        for url, protocol in zip(cls.URLS, ['http', 'socks4', 'socks5']):
+            proxy = await cls._get_text(url)
+            list_of_proxy.append([
+                ProxyAddress(
+                    ip=proxy.split(':')[0],
+                    ports={protocol: int(proxy.split(':')[1])},
+                    data={'source': 'proxyscrape'},
+                ) for proxy in proxy.splitlines()
+            ])
+
+        return list_of_proxy
+
+
 async def main():
     # db = ProxyDatabase()
     # pprint(db.data.values())
@@ -83,7 +120,7 @@ async def main():
     # await asyncio.sleep(60*30)
     # await main()
 
-    pprint(await WebShareHarvester.get_new_proxy())
+    pprint(await ProxyScrapeHarvester.get_new_proxy())
 
 
 if __name__ == '__main__':
