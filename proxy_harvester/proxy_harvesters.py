@@ -90,7 +90,7 @@ class ProxyScrapeHarvester(Harvester):
 
         for url, protocol in zip(cls.URLS, ['http', 'socks4', 'socks5']):
             proxy = await cls._get_text(url)
-            list_of_proxy.append([
+            list_of_proxy.extend([
                 ProxyAddress(
                     ip=proxy.split(':')[0],
                     ports={protocol: int(proxy.split(':')[1])},
